@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">CardGame</string>
+    <string name="fontWeight">Bold</string>
+    <string name="startButtonTitle">Comenzar</string>
+    <string name="userPlaceholder">Introduce tu usuario...</string>
 </resources>
