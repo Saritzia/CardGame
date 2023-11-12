@@ -11,4 +11,5 @@
     <string name="scoreText">Score: </string>
     <string name="sameCardText">Se ha obtenido la misma carta, vuelva a pulsar</string>
     <string name="backLiteral">Back</string>
+    <string name="gameOverMessage">Game over, puntuación:</string>
 </resources>

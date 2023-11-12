@@ -20,58 +20,75 @@ class GameActivity: AppCompatActivity() {
         binding = ActivityGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.userName.text = intent.extras?.getString("userName") ?: "User"
-        binding.scoreText.text = score.toString()
+        binding.scoreText.text = "${getString(R.string.scoreText)} $score"
         getNewCard(previousPosition)
         binding.upButton.setOnClickListener {
-            buttonTapped()
+            preparePosition()
+            checkCurrentCardIsGreater()
         }
         binding.downButton.setOnClickListener {
-            buttonTapped()
+            preparePosition()
+            checkCurrentCardIsSlower()
         }
     }
 
     private fun getNewPosition(): Int {
-       return Random.nextInt(0,cards.size)
+       return (cards.indices).random()
     }
 
     private fun getNewCard(position: Int) {
         binding.card.setImageResource(cards[position])
     }
 
-    private fun checkCurrentCardIsGreater(): Boolean {
-        return currentPosition > previousPosition
+    private fun checkCurrentCardIsGreater() {
+        when {
+            currentPosition == previousPosition -> {
+                Snackbar.make(binding.root, getString(R.string.sameCardText), Snackbar.LENGTH_SHORT)
+                    .show()
+            }
+
+            currentPosition > previousPosition -> {
+                score++
+                updateScoreText()
+                getNewCard(currentPosition)
+            }
+
+            else -> {
+                getNewCard(currentPosition)
+                createGameOverSnackBar()
+            }
+        }
     }
 
-    private fun buttonTapped() {
+    private fun checkCurrentCardIsSlower(){
+        when {
+            currentPosition == previousPosition -> {
+                Snackbar.make(binding.root, getString(R.string.sameCardText), Snackbar.LENGTH_SHORT).show()
+            }
+            currentPosition < previousPosition  -> {
+                score++
+                updateScoreText()
+                getNewCard(currentPosition)
+            }
+            else -> {
+                getNewCard(currentPosition)
+                createGameOverSnackBar()
+            }
+        }
+    }
+    private fun preparePosition() {
         previousPosition = currentPosition
         currentPosition = getNewPosition()
-        if(currentPosition == previousPosition) {
-            Snackbar.make(binding.root,getString(R.string.sameCardText),Snackbar.LENGTH_SHORT).show()
-            return
-        }
-        when{
-            binding.upButton.callOnClick() -> {
-                if (checkCurrentCardIsGreater()) {
-                    score ++
-                }else{
-                    createGameOverSnackBar()
-                }
-            }
-            binding.downButton.callOnClick() ->
-                if (!checkCurrentCardIsGreater()) {
-                    score ++
-                }else{
-                    createGameOverSnackBar()
-                }
-            }
-        }
-
+    }
     private fun createGameOverSnackBar() {
-        val snackbar = Snackbar.make(binding.root,"Game over, puntuación: $score",Snackbar.LENGTH_INDEFINITE)
-        snackbar.setAction(getString(R.string.backLiteral)){
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+        val snackbar = Snackbar.make(binding.root, "${getString(R.string.gameOverMessage)} $score", Snackbar.LENGTH_INDEFINITE)
+        snackbar.setAction(getString(R.string.backLiteral)) {
+            finish()
         }
         snackbar.show()
+    }
+
+    private fun updateScoreText(){
+        binding.scoreText.text = "${getString(R.string.scoreText)} $score"
     }
 }
