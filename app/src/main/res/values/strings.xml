@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">CardGame</string>
-    <string name="fontWeight">Bold</string>
     <string name="startButtonTitle">Comenzar</string>
     <string name="userPlaceholder">Introduce tu usuario...</string>
+    <string name="appTitleUp" translatable="false">Up</string>
+    <string name="appTitleDown" translatable="false">Down</string>
+    <string name="emptyUserSnackBar">Por favor, introduzca un nombre de usuario</string>
+    <string name="startMessage">, vamos a empezar</string>
+    <string name="okLiteral">Ok</string>
+    <string name="userName">User: </string>
+    <string name="scoreText">Score: </string>
 </resources>
